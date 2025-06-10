@@ -1,0 +1,40 @@
+{
+  "name": "swagger2llm",
+  "version": "0.1.0",
+  "description": "Convert Swagger/OpenAPI files to llms.txt for LLM context",
+  "main": "dist/index.js",
+  "bin": {
+    "swagger2llm": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/cli.ts",
+    "dev": "tsx watch src/cli.ts",
+    "test": "vitest run"
+  },
+  "keywords": ["swagger", "openapi", "cli", "llm"],
+  "author": "Stanislav Popov",
+  "license": "MIT",
+  "files": ["dist", "README.md", "LICENSE"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/swagger2llm.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "openai": "^5.3.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^24.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.11.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
+  }
+}
