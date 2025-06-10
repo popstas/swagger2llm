@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run CLI with Planfix API",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["tsx"],
+            "program": "${workspaceFolder}/src/cli.ts",
+            "args": [
+                "https://help.planfix.com/restapidocs/swagger.json",
+                "--multiple"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Tests",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "test", "--", "--inspect-brk"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}
