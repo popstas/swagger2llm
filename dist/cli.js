@@ -18,15 +18,13 @@ async function main() {
     if (args.multiple) {
         const dir = 'llms';
         await fs_1.promises.mkdir(dir, { recursive: true });
-        let level = 1;
         for (const l of [1, 2, 3]) {
             const content = await (0, index_1.generateSummary)(spec, l);
             await fs_1.promises.writeFile(`${dir}/llms-level${l}.txt`, content, 'utf8');
-            level++;
         }
     }
     else {
-        const content = await (0, index_1.generateSummary)(spec, 2);
+        const content = await (0, index_1.generateSummary)(spec, 3);
         await fs_1.promises.writeFile('llms.txt', content, 'utf8');
     }
 }

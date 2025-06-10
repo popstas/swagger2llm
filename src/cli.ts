@@ -14,14 +14,12 @@ async function main() {
   if (args.multiple) {
     const dir = 'llms';
     await fs.mkdir(dir, { recursive: true });
-    let level = 1;
     for (const l of [1, 2, 3]) {
       const content = await generateSummary(spec, l);
       await fs.writeFile(`${dir}/llms-level${l}.txt`, content, 'utf8');
-      level++;
     }
   } else {
-    const content = await generateSummary(spec, 2);
+    const content = await generateSummary(spec, 3);
     await fs.writeFile('llms.txt', content, 'utf8');
   }
 }

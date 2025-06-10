@@ -1,18 +1,26 @@
 {
   "name": "swagger2llm",
   "version": "1.0.0",
-  "description": "Convert swagger.json to llms.txt",
+  "description": "Convert Swagger/OpenAPI files to llms.txt for LLM context",
   "main": "dist/index.js",
   "bin": {
     "swagger2llm": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest run"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["swagger", "openapi", "cli", "llm"],
+  "author": "Stanislav Popov",
+  "license": "MIT",
+  "files": ["dist", "README.md", "LICENSE"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/swagger2llm.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "commonjs",
   "dependencies": {
     "minimist": "^1.2.8",

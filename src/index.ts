@@ -1,5 +1,4 @@
 import { parse as parseYaml } from 'yaml';
-import { promises as fs } from 'fs';
 import OpenAI from 'openai';
 
 export async function downloadSpec(url: string): Promise<any> {
@@ -35,20 +34,34 @@ async function maybeShorten(text: string): Promise<string> {
   return truncate(completion.choices[0].message.content || text);
 }
 
-export async function generateSummary(spec: any, level = 2): Promise<string> {
+export async function generateSummary(spec: any, level = 3): Promise<string> {
+  if (level >= 3) {
+    return JSON.stringify(spec, null, 2);
+  }
   const lines: string[] = [];
   const paths = spec.paths || {};
   for (const [path, methods] of Object.entries<any>(paths)) {
     for (const [method, details] of Object.entries<any>(methods)) {
       let line = `${method.toUpperCase()} ${path}`;
-      if (level >= 2 && details.summary) {
+      if (details.summary) {
         line += ` - ${await maybeShorten(details.summary)}`;
       }
-      if (level >= 3 && details.description) {
+      if (details.description) {
         const desc = await maybeShorten(details.description);
         line += `: ${desc}`;
       }
       lines.push(line);
+      if (level >= 2 && Array.isArray(details.parameters)) {
+        for (const p of details.parameters) {
+          let pLine = `  param ${p.name}`;
+          if (p.in) pLine += ` (${p.in})`;
+          if (p.required) pLine += ' required';
+          if (p.description) {
+            pLine += ` - ${await maybeShorten(p.description)}`;
+          }
+          lines.push(pLine);
+        }
+      }
     }
   }
   return lines.join('\n');

@@ -38,20 +38,36 @@ async function maybeShorten(text) {
     });
     return truncate(completion.choices[0].message.content || text);
 }
-async function generateSummary(spec, level = 2) {
+async function generateSummary(spec, level = 3) {
+    if (level >= 3) {
+        return JSON.stringify(spec, null, 2);
+    }
     const lines = [];
     const paths = spec.paths || {};
     for (const [path, methods] of Object.entries(paths)) {
         for (const [method, details] of Object.entries(methods)) {
             let line = `${method.toUpperCase()} ${path}`;
-            if (level >= 2 && details.summary) {
+            if (details.summary) {
                 line += ` - ${await maybeShorten(details.summary)}`;
             }
-            if (level >= 3 && details.description) {
+            if (details.description) {
                 const desc = await maybeShorten(details.description);
                 line += `: ${desc}`;
             }
             lines.push(line);
+            if (level >= 2 && Array.isArray(details.parameters)) {
+                for (const p of details.parameters) {
+                    let pLine = `  param ${p.name}`;
+                    if (p.in)
+                        pLine += ` (${p.in})`;
+                    if (p.required)
+                        pLine += ' required';
+                    if (p.description) {
+                        pLine += ` - ${await maybeShorten(p.description)}`;
+                    }
+                    lines.push(pLine);
+                }
+            }
         }
     }
     return lines.join('\n');
