@@ -4,7 +4,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Run CLI with Planfix API",
+            "name": "Run CLI with Planfix swagger.json",
             "runtimeExecutable": "npx",
             "runtimeArgs": ["tsx"],
             "program": "${workspaceFolder}/src/cli.ts",

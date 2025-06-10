@@ -11,8 +11,15 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
-    "target": "es2019",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "lib": ["es2019","dom"],                             /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "target": "es2022",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "NodeNext",                                /* Specify what module code is generated. */
+    "moduleResolution": "NodeNext",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    "lib": ["es2022","dom"],                             /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "esModuleInterop": true,                            /* Emit additional JavaScript to ease support for importing CommonJS modules. */
+    "outDir": "./dist",                                 /* Specify an output folder for all emitted files. */
+    "moduleDetection": "force",                         /* Ensure modules are properly detected */
+    "allowSyntheticDefaultImports": true,               /* Allow default imports from modules with no default export. */
+    "rootDir": "src",                                   /* Specify the root folder within your source files. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
     // "libReplacement": true,                           /* Enable lib replacement. */
     // "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
@@ -26,9 +33,7 @@
     // "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
 
     /* Modules */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "rootDir": "src",                                    /* Specify the root folder within your source files. */
-    // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
