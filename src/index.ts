@@ -86,8 +86,8 @@ function truncate(text: string, max = 120): string {
   return text.length > max ? text.slice(0, max - 3) + '...' : text;
 }
 
-async function maybeShorten(text: string): Promise<string> {
-  if (text.length <= 300 || !process.env.OPENAI_API_KEY) {
+async function maybeShorten(text: string, useLlm: boolean): Promise<string> {
+  if (!useLlm || text.length <= 300 || !process.env.OPENAI_API_KEY) {
     return truncate(text);
   }
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -102,20 +102,35 @@ async function maybeShorten(text: string): Promise<string> {
   return truncate(completion.choices[0].message.content || text);
 }
 
-export async function generateSummary(spec: any, level = 3): Promise<string> {
+export function stripExamples(obj: any): void {
+  if (Array.isArray(obj)) {
+    obj.forEach(stripExamples);
+  } else if (obj && typeof obj === 'object') {
+    for (const key of Object.keys(obj)) {
+      if (key === 'examples') {
+        delete obj[key];
+      } else {
+        stripExamples(obj[key]);
+      }
+    }
+  }
+}
+
+export async function generateSummary(spec: any, level = 3, options: { useLlm?: boolean } = {}): Promise<string> {
   if (level >= 3) {
     return JSON.stringify(spec, null, 2);
   }
   const lines: string[] = [];
   const paths = spec.paths || {};
   for (const [path, methods] of Object.entries<any>(paths)) {
+    if (lines.length > 0) lines.push('');
     for (const [method, details] of Object.entries<any>(methods)) {
       let line = `${method.toUpperCase()} ${path}`;
       if (details.summary) {
-        line += ` - ${await maybeShorten(details.summary)}`;
+        line += ` - ${await maybeShorten(details.summary, options.useLlm !== false)}`;
       }
       if (details.description) {
-        const desc = await maybeShorten(details.description);
+        const desc = await maybeShorten(details.description, options.useLlm !== false);
         line += `: ${desc}`;
       }
       lines.push(line);
@@ -125,7 +140,7 @@ export async function generateSummary(spec: any, level = 3): Promise<string> {
           if (p.in) pLine += ` (${p.in})`;
           if (p.required) pLine += ' required';
           if (p.description) {
-            pLine += ` - ${await maybeShorten(p.description)}`;
+            pLine += ` - ${await maybeShorten(p.description, options.useLlm !== false)}`;
           }
           lines.push(pLine);
         }
